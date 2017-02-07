@@ -1,5 +1,5 @@
-# linux_java_dev_env
-CentOS Linux Environment for Java Web Development
+# linux_java_dev_env_ubuntu
+Ubuntu Linux Environment for Java Web Development
 
 # Software included  
 * Java  
@@ -11,7 +11,7 @@ CentOS Linux Environment for Java Web Development
 * Maven  
 * Node & NPM  
 * Docker  
-* GNOME UI  
+* Ubuntu GUI  
 * Unzip  
 * Ansible  
 
