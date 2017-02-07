@@ -1,0 +1,26 @@
+---
+- name: Find if Eclipse previously downloaded
+  stat: path={{temp_install_dir}}/{{filename}}
+  register: eclipse_check
+  
+- name: Download Eclipse
+  get_url: url={{url}} dest={{temp_install_dir}}/{{filename}}
+  when: eclipse_check.stat.exists == False
+
+- name: Unarchive Eclipse
+  unarchive: src={{temp_install_dir}}/{{filename}} dest={{temp_install_dir}} copy=no
+
+- name: Clean up any Eclipse
+  file: state=absent path={{install_dir}}
+
+- name: Move directory
+  command: "mv {{temp_install_dir}}/{{app}} {{install_dir}}"  
+
+- name: Create symbolic link add to /usr/bin
+  file: src={{install_dir}}/{{executable}} dest=/usr/bin/{{executable}} owner=root group=root state=link
+
+- name: Create desktop link for Eclipse
+  copy: src=/home/vagrant/share/files/{{app}}/{{app}}.desktop dest=/home/vagrant/Desktop/{{app}}.desktop owner=vagrant group=vagrant
+
+- name: Permissions for desktop link for Eclipse
+  file: path=/home/vagrant/Desktop/{{app}}.desktop owner=vagrant group=vagrant mode="u+x,g+x,o+x"

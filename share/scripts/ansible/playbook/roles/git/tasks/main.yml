@@ -1,0 +1,5 @@
+---
+## OS SPECIFIC: change this for different distro
+- name: Install Git
+  apt: name="{{app}}" state=present
+## END OS SPECIFIC

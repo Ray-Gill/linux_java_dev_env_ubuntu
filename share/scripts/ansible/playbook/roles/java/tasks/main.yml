@@ -1,0 +1,36 @@
+---
+- name: Find if Java previously downloaded
+  stat: path={{temp_install_path}}/{{filename}}
+  register: java_check
+  
+- name: Download Java
+  command: "wget -q -O {{temp_install_path}}/{{filename}} --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{url}} creates={{temp_install_path}}/{{filename}}"
+  when: java_check.stat.exists == False
+
+- name: Unpack archive
+  unarchive: src={{temp_install_path}}/{{filename}} dest={{temp_install_path}}
+
+- name: Clean up any Java
+  file: state=absent path={{install_dir}}
+  
+- name: Move directory
+  command: "mv {{temp_install_path}}/{{temp_install_dir}} {{install_dir}}"  
+
+- name: Fix ownership
+  file: state=directory path={{install_dir}} owner=root group=root recurse=yes
+
+- name: Make Java available for system
+  command: 'update-alternatives --install "/usr/bin/{{executable}}" "{{executable}}" "/opt/java/bin/{{executable}}" 2000'
+
+- name: Setup Java Home Env variables
+  shell: echo -e "\nexport JAVA_HOME={{install_dir}}" >> /etc/environment
+  args:
+    executable: /bin/bash
+  
+- name: Setup Java on Path Env Variable
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?/{{path_dir}}).*?)(["]*)$'
+    line="PATH=\1\2:{{path_dir}}\3"

@@ -1,0 +1,8 @@
+app: squirrelsql
+version: 3.7.1-standard
+url: https://sourceforge.net/projects/squirrel-sql/files/1-stable/3.7.1-plainzip/squirrelsql-3.7.1-standard.zip/download
+filename: squirrelsql-3.7.1-standard.zip
+temp_install_path: /usr/local/src
+temp_install_dir: squirrelsql-3.7.1-standard
+install_dir: /opt/squirrelsql
+executable: squirrel-sql.sh

@@ -1,0 +1,42 @@
+---
+- name: Find if Maven previously downloaded
+  stat: path={{temp_install_dir}}/{{filename}}
+  register: maven_check
+  
+- name: Download Maven
+  get_url: url={{url}} dest={{temp_install_path}}
+  when: maven_check.stat.exists == False
+  
+- name: Unarchive
+  unarchive: src={{temp_install_path}}/{{filename}} dest={{temp_install_path}} copy=no
+
+- name: Clean up any maven
+  file: state=absent path={{install_dir}}
+  
+- name: Move directory
+  command: "mv {{temp_install_path}}/{{temp_install_dir}} {{install_dir}}"  
+
+- name: Fix ownership
+  file: state=directory path={{install_dir}} owner=root group=root recurse=yes
+
+- name: Setup Maven Home Env variable
+  shell: echo -e "\nexport M2_HOME={{install_dir}}" >> /etc/environment
+  args:
+    executable: /bin/bash
+  
+- name: ldconfig
+  command: "ldconfig"
+
+- name: make m2 directory
+  file: path={{m2_dir}} state=directory owner=vagrant group=vagrant recurse=yes
+  
+- name: remove maven setting files
+  file: state=absent path={{m2_dir}}/settings.xml
+  
+- name: Setup maven in Path Env variable
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?{{path_dir}}).*?)(["]*)$'
+    line="PATH=\1\2:{{path_dir}}\3"

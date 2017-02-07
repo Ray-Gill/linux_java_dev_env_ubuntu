@@ -1,0 +1,21 @@
+---
+# Source: https://michaelheap.com/ansible-installing-google-chrome/
+## OS SPECIFIC: change this for different distro
+- name: Add Google Chrome key
+  shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+
+- name: Add Google Chrome repo
+  copy: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest={{apt_file}} owner=root group=root mode=644
+
+- name: Update apt cache
+  apt: update_cache=yes
+  
+- name: Install Google Chrome
+  apt: name="google-chrome-stable" state=installed
+## END OS SPECIFIC
+
+- name: Create desktop link for Chrome
+  copy: src=/home/vagrant/share/files/{{app}}/{{app}}.desktop dest=/home/vagrant/Desktop/{{app}}.desktop owner=vagrant group=vagrant
+
+- name: Permissions for desktop link for Chrome
+  file: path=/home/vagrant/Desktop/{{app}}.desktop owner=vagrant group=vagrant mode="u+x,g+x,o+x"

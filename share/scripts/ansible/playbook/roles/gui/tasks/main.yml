@@ -1,0 +1,8 @@
+---
+## OS SPECIFIC: change this for different distro
+- name: Install Ubuntu Desktop
+  apt: name="{{app}}" state=present
+## END OS SPECIFIC
+
+- name: Set Run Level for GUI
+  file: src=/lib/systemd/system/runlevel5.target dest=/etc/systemd/system/default.target state=link
