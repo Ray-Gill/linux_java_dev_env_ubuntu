@@ -1,0 +1,139 @@
+intstall Java 8
+	- already done
+	- validate JAVA_HOME is in /etc/environment
+
+install Scala
+	- sudo apt-get install scala
+	- edit /etc/environment
+		* append the following to the end:
+		
+		export SCALA_HOME=/usr/share/scala-2.11
+	
+install HDFS (Hadoop)
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/hadoop
+	- add to /usr/local/hadoop/bin directory to PATH via edit and append /etc/environment
+	- add to /usr/local/hadoop/sbin directory to PATH via edit and append /etc/environment
+
+	- edit /etc/environment
+		* append the following to the end:
+		
+		export HADOOP_HOME=/usr/local/hadoop
+		export HADOOP_MAPRED_HOME=/usr/local/hadoop
+		export HADOOP_COMMON_HOME=/usr/local/hadoop
+		export HADOOP_HDFS_HOME=/usr/local/hadoop
+		export YARN_HOME=/usr/local/hadoop
+		export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib/native
+
+	- /usr/local/hadoop/bin/hadoop
+
+	- configure Hadoop
+		cd $HADOOP_HOME/etc/hadoop
+
+		- edit core-site.xml
+			<configuration>
+			   <property> 
+			      <name>fs.default.name</name> 
+			      <value>hdfs://localhost:9000</value> 
+			   </property>
+			</configuration>
+
+		- edit hdfs-site.xml
+			<configuration>
+			   <property> 
+			      <name>dfs.replication</name> 
+			      <value>1</value> 
+			   </property> 
+			   <property> 
+			      <name>dfs.name.dir</name> 
+			      <value>file:///home/hadoop/hadoopinfra/hdfs/namenode</value> 
+			   </property> 
+			   <property> 
+			      <name>dfs.data.dir</name>
+			      <value>file:///home/hadoop/hadoopinfra/hdfs/datanode</value > 
+			   </property>   
+			</configuration>
+		
+		- edit yarn-site.xml
+			<configuration>
+			   <property>
+			      <name>yarn.nodemanager.aux-services</name>
+			      <value>mapreduce_shuffle</value>
+			   </property> 
+			</configuration>
+
+		- copy and edit mapred-site.xml
+			- cp mapred-site.xml.template mapred-site.xml
+
+			<configuration>
+			   <property> 
+			      <name>mapreduce.framework.name</name> 
+			      <value>yarn</value> 
+			   </property>
+			</configuration>
+
+		- name node setup
+			- hdfs namenode -format
+			- start-dfs.sh
+			- start-yarn.sh
+
+		- access on web
+			- http://localhost:50070/
+
+		- verify all applications for cluster
+			- http://localhost:8088/
+
+install NiFi
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/nifi
+	- add to /usr/local/nifi/bin directory to PATH via edit and append /etc/environment
+	- ./nifi.sh run
+	- http://localhost:8080/nifi/
+
+install Spark
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/spark
+	- add to /usr/local/spark/bin directory to PATH via edit and append /etc/environment
+	- edit /etc/environment
+		* append the following to the end:
+		
+		export SPARK_HOME=/usr/local/spark
+	- ./spark-shell
+
+install Kafka
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/kafka
+	- add to /usr/local/kafka/bin directory to PATH via edit and append /etc/environment
+	- bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
+	- bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+	- bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+	- bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+install Ambari
+
+install HBase
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/hbase
+	- add to /usr/local/hbase/bin directory to PATH via edit and append /etc/environment
+	- ./bin/start-hbase.sh
+	- ./bin/hbase shell
+	- command: help
+
+
+install Hive
+	- download -> tar -xzvf -> sudo mv <expanded dir> /usr/local/hive
+	- add to /usr/local/hive/bin directory to PATH via edit and append /etc/environment
+	- edit /etc/environment
+		* append the following to the end:
+		
+		export HIVE_HOME=/usr/local/hive
+
+		HDFS commands create hive.metastore.warehouse.dir & set permissions
+  			- hadoop fs -mkdir /tmp
+			- hadoop fs -mkdir /user
+			- hadoop fs -mkdir /user/hive
+			- hadoop fs- mkdir /user/hive/warehouse
+			- hadoop fs -chmod g+w /tmp
+			- hadoop fs -chmod g+w /user/hive/warehouse
+
+	- start app: hive
+
+
+Refresh /etc/environment
+	- . /etc/environment
+

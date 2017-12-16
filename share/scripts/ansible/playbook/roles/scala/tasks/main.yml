@@ -1,0 +1,28 @@
+---
+- name: Find if Scala previously downloaded
+  stat: path={{temp_install_dir}}/{{filename}}
+  register: scala_check
+  
+- name: Download Scala
+  get_url: url={{url}} dest={{temp_install_path}}
+  when: scala_check.stat.exists == False
+  
+- name: Unarchive
+  unarchive: src={{temp_install_path}}/{{filename}} dest={{temp_install_path}} copy=no
+
+- name: Clean up any Scala
+  file: state=absent path={{install_dir}}
+  
+- name: Move directory
+  command: "mv {{temp_install_path}}/{{temp_install_dir}} {{install_dir}}"  
+
+- name: Fix ownership
+  file: state=directory path={{install_dir}} owner=root group=root recurse=yes
+
+- name: Setup Kafka in Path Env variable
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?{{path_dir}}).*?)(["]*)$'
+    line="PATH=\1\2:{{path_dir}}\3"

@@ -1,0 +1,28 @@
+---
+- name: Find if Kafka previously downloaded
+  stat: path={{temp_install_dir}}/{{filename}}
+  register: kafka_check
+  
+- name: Download Kafka
+  get_url: url={{url}} dest={{temp_install_path}}
+  when: kafka_check.stat.exists == False
+  
+- name: Unarchive
+  unarchive: src={{temp_install_path}}/{{filename}} dest={{temp_install_path}} copy=no
+
+- name: Clean up any Kafka
+  file: state=absent path={{install_dir}}
+  
+- name: Move directory
+  command: "mv {{temp_install_path}}/{{temp_install_dir}} {{install_dir}}"  
+
+- name: Fix ownership
+  file: state=directory path={{install_dir}} owner=root group=root recurse=yes
+
+- name: Setup kafka in Path Env variable
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?{{path_dir}}).*?)(["]*)$'
+    line="PATH=\1\2:{{path_dir}}\3"

@@ -4,7 +4,7 @@
   register: java_check
   
 - name: Download Java
-  command: "wget -q -O {{temp_install_path}}/{{filename}} --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{url}} creates={{temp_install_path}}/{{filename}}"
+  command: "sudo wget -q -O {{temp_install_path}}/{{filename}} --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie' '{{url}}' creates={{temp_install_path}}/{{filename}}"
   when: java_check.stat.exists == False
 
 - name: Unpack archive

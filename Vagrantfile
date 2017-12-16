@@ -51,9 +51,12 @@ Vagrant.configure(2) do |config|
     vb.gui = true
     # RAM
     vb.memory = "8192"
+	vb.cpus = 2
     # Display settings, such as Video RAM and 3D acceleration
-    vb.customize ["modifyvm", :id, "--vram", "32"]
+    vb.customize ["modifyvm", :id, "--vram", "64"]
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+	config.vbguest.auto_update = false
+	config.vbguest.iso_path = "VBoxGuestAdditions_5.2.2.iso"
   #
   end
   #

@@ -15,4 +15,6 @@
     - jmeter
     - chrome
     - docker
+    - scala
+    - kafka
     - gui

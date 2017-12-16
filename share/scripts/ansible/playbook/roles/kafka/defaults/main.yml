@@ -1,0 +1,8 @@
+app: kafka
+version: 0.11.0.2
+url: http://apache.mirror.rafal.ca/kafka/0.11.0.2/kafka_2.11-0.11.0.2.tgz
+filename: kafka_2.11-0.11.0.2.tgz
+temp_install_path: /usr/local/src
+temp_install_dir: kafka_2.11-0.11.0.2
+install_dir: /opt/kafka
+path_dir: /opt/kafka/bin

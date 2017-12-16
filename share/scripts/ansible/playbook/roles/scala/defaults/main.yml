@@ -1,0 +1,8 @@
+app: kafka
+version: 2.11.12
+url: https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz
+filename: scala-2.11.12.tgz
+temp_install_path: /usr/local/src
+temp_install_dir: scala-2.11.12
+install_dir: /opt/scala
+path_dir: /opt/scala/bin
