@@ -1,0 +1,3 @@
+app: docker-compose
+executable_dir: /usr/local/bin
+executable: docker-compose

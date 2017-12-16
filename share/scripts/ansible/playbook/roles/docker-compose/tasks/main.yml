@@ -1,0 +1,9 @@
+---
+- name: Clean up any Docker-Compose
+  file: state=absent path={{executable_dir}}/{{executable}}
+
+- name: Download Docker-Compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` > {{executable_dir}}/{{executable}}
+  
+- name: Permissions for Docker-Compose
+  file: path={{executable_dir}}/{{executable}} owner=vagrant group=vagrant mode="u+x,g+x,o+x"

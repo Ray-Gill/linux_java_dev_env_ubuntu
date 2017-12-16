@@ -9,7 +9,6 @@ echo "PATH=$PATH" > /etc/environment
 ## OS SPECIFIC: change this for different distro
 echo "Add Ansible APT"
 apt-add-repository ppa:ansible/ansible
-#apt-get -y update
 apt-get -y install ansible
 echo "Install Ansible"
 ## END OS SPECIFIC
