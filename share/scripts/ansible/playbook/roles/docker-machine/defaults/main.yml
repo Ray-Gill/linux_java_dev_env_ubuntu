@@ -1,0 +1,5 @@
+app: docker-machine
+temp_install_path: /tmp
+temp_install_dir: docker-machine
+executable_dir: /usr/local/bin
+executable: docker-machine

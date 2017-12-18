@@ -1,0 +1,6 @@
+---
+- name: Clean up any Docker-Machine
+  file: state=absent path={{executable_dir}}/{{executable}}
+
+- name: Download Docker-Machine and set Permissions
+  shell: curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >{{temp_install_path}}/{{temp_install_dir}} && chmod +x {{temp_install_path}}/{{temp_install_dir}} && sudo cp {{temp_install_path}}/{{temp_install_dir}} {{executable_dir}}/{{executable}}

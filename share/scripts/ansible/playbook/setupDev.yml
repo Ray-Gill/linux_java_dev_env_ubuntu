@@ -16,6 +16,7 @@
     - chrome
     - docker
     - docker-compose
+    - docker-machine
     - scala
     - kafka
     - gui
